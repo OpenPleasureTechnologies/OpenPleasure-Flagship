@@ -1,0 +1,39 @@
+Firmware (Zephyr)
+bash
+git clone https://github.com/openpleasure/firmware
+cd firmware
+west init -l .
+west update
+west build -b qcm6490_generic app/
+
+ML (Python)
+bash
+cd ml/
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python train.py --config configs/tiny_transformer.yaml
+
+
+App (Flutter)
+bash
+cd app/flutter
+flutter pub get
+flutter run -d [android/ios]
+
+Commit Message Format
+text
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+Types: feat, fix, docs, style, refactor, test, chore, hardware, ml
+
+Example:
+
+text
+feat(haptics): add sinusoidal pattern generator
+
+Implements DRV2605 waveform library with frequency modulation.
+Closes #42
