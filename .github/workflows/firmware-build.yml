@@ -1,0 +1,66 @@
+name: Firmware Build & Test
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware-build.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'firmware/**'
+
+jobs:
+  build-zephyr:
+    runs-on: ubuntu-latest
+    container:
+      image: zephyrprojectrtos/zephyr-build:latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: West init
+        run: |
+          cd firmware
+          west init -l .
+          west update
+      
+      - name: Build for qcm6490
+        run: |
+          cd firmware
+          west build -b qcm6490_generic app/
+          
+      - name: Build for rk3588
+        run: |
+          cd firmware
+          west build -b rk3588_generic app/
+          
+      - name: Archive firmware binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-binaries
+          path: firmware/build/zephyr/zephyr.bin
+          
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run clang-format
+        uses: jidicula/clang-format-action@v4.13.0
+        with:
+          clang-format-version: '17'
+          check-path: 'firmware'
+          
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run C++ tests
+        run: |
+          cd firmware/tests
+          mkdir build && cd build
+          cmake ..
+          make
+          ctest --output-on-failure
