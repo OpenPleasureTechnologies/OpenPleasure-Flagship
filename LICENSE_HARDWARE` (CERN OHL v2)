@@ -1,0 +1,18 @@
+markdown
+CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+
+Copyright (c) 2026 Open Pleasure Labs Contributors
+
+This source code is licensed under the CERN-OHL-S v2.
+
+Full license text: https://ohwr.org/project/cernohl/wikis/Documents/CERN-OHL-version-2
+
+Summary (not a substitute for reading the full license):
+
+- You may redistribute and modify this hardware design
+- You must make source available (schematics, PCB layouts, BOM)
+- You must license derivative works under CERN-OHL-S v2
+- No warranty or liability
+
+See LICENSE_HARDWARE.txt for full terms.
+(For full text, download from https://ohwr.org/cern_ohl_s_v2.txt)
